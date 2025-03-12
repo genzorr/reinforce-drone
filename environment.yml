@@ -1,0 +1,16 @@
+name: reinforce
+channels:
+  - conda-forge
+  - defaults
+  - nvidia
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - ipykernel
+      - numpy
+      - matplotlib
+      - jax
+      - optax
+      - flax
+      - jaxtyping

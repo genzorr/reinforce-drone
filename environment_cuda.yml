@@ -1,0 +1,17 @@
+name: reinforce
+channels:
+  - conda-forge
+  - defaults
+  - nvidia
+dependencies:
+  - python=3.12
+  - pip
+  - cuda-toolkit=12.6
+  - pip:
+      - ipykernel
+      - numpy
+      - matplotlib
+      - jax[cuda12]
+      - optax
+      - flax
+      - jaxtyping
