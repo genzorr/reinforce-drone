@@ -42,30 +42,45 @@ We use a standard REINFORCE algorithm with(out) baseline. In each epoch, we do t
 
 1. Generate an episode (unroll)
 
-$$(s_0, a_0, r_0), (s_1, a_1, r_1), \ldots, (s_{T-1}, a_{T-1}, r_{T-1}),$$
-following the policy $\pi_{\theta}(\cdot|s)$. $T$ is the maximum number of steps in an episode.
+```math
+(s_0, a_0, r_0), (s_1, a_1, r_1), \ldots, (s_{T-1}, a_{T-1}, r_{T-1}),
+```
+
+following the policy $`\pi_{\theta}(\cdot|s)`$. $`T`$ is the maximum number of steps in an episode.
 
 2. Compute the return (reward-to-go):
 
-$$G_t = \sum_{k=t}^{T-1} \gamma^{k-t} r_k$$
-where $\gamma$ is the discount factor.
+```math
+G_t = \sum_{k=t}^{T-1} \gamma^{k-t} r_k,
+```
+
+where $`\gamma`$ is the discount factor.
 
 3. Compute the advantage:
 
-$$A_t = G_t - B_t$$
-where $B_t$ is the baseline (if used). Then, normalize the advantages:
+```math
+A_t = G_t - B_t,
+```
 
-$$\hat{A}_t = \frac{A_t - \mu_{A_t}}{\sigma_{A_t}}$$
+where $`B_t`$ is the baseline (if used). Then, normalize the advantages:
+
+```math
+\hat{A}_t = \frac{A_t - \mu_{A_t}}{\sigma_{A_t}}
+```
 
 4. Update the policy parameters:
 
-$$\theta \leftarrow \theta + \alpha \sum_{t=0}^{T-1} \nabla_\theta \log \pi_{\theta}(a_t|s_t) \hat{A}_t$$
+```math
+\theta \leftarrow \theta + \alpha \sum_{t=0}^{T-1} \nabla_\theta \log \pi_{\theta}(a_t|s_t) \hat{A}_t
+```
 
 5. Update the baseline (if used):
 
-$$B_t \leftarrow \beta B_t + (1 - \beta) G_t$$
+```math
+B_t \leftarrow \beta B_t + (1 - \beta) G_t
+```
 
-The difference from the standard REINFORCE algorithm is that we use batch of episodes in each epoch. We also use a baseline for each step in the unroll, instead of a single value, so $B_t$ is a vector of the same length as the unroll.
+The difference from the standard REINFORCE algorithm is that we use batch of episodes in each epoch. We also use a baseline for each step in the unroll, instead of a single value, so $`B_t`$ is a vector of the same length as the unroll.
 
 For this approach to work with jax, when performing the unroll, we do not stop environment when terminal state is reached. Instead, we effectively mask out the rewards after the terminal state.
 
