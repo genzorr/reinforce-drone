@@ -42,40 +42,28 @@ We use a standard REINFORCE algorithm with(out) baseline. In each epoch, we do t
 
 1. Generate an episode (unroll)
 
-$$
-(s_0, a_0, r_0), (s_1, a_1, r_1), \ldots, (s_{T-1}, a_{T-1}, r_{T-1}),
-$$
+$$(s_0, a_0, r_0), (s_1, a_1, r_1), \ldots, (s_{T-1}, a_{T-1}, r_{T-1}),$$
 following the policy $\pi_{\theta}(\cdot|s)$. $T$ is the maximum number of steps in an episode.
 
 2. Compute the return (reward-to-go):
 
-$$
-G_t = \sum_{k=t}^{T-1} \gamma^{k-t} r_k
-$$
+$$G_t = \sum_{k=t}^{T-1} \gamma^{k-t} r_k$$
 where $\gamma$ is the discount factor.
 
 3. Compute the advantage:
 
-$$
-A_t = G_t - B_t
-$$
+$$A_t = G_t - B_t$$
 where $B_t$ is the baseline (if used). Then, normalize the advantages:
 
-$$
-\hat{A}_t = \frac{A_t - \mu_{A_t}}{\sigma_{A_t}}
-$$
+$$\hat{A}_t = \frac{A_t - \mu_{A_t}}{\sigma_{A_t}}$$
 
 4. Update the policy parameters:
 
-$$
-\theta \leftarrow \theta + \alpha \sum_{t=0}^{T-1} \nabla_\theta \log \pi_{\theta}(a_t|s_t) \hat{A}_t
-$$
+$$\theta \leftarrow \theta + \alpha \sum_{t=0}^{T-1} \nabla_\theta \log \pi_{\theta}(a_t|s_t) \hat{A}_t$$
 
 5. Update the baseline (if used):
 
-$$
-B_t \leftarrow \beta B_t + (1 - \beta) G_t
-$$
+$$B_t \leftarrow \beta B_t + (1 - \beta) G_t$$
 
 The difference from the standard REINFORCE algorithm is that we use batch of episodes in each epoch. We also use a baseline for each step in the unroll, instead of a single value, so $B_t$ is a vector of the same length as the unroll.
 
@@ -130,8 +118,8 @@ Rewards with baseline:
 
 We can see that with baseline, the training process is faster. Probably, without baseline we may achieve similar results, but it would take more epochs to converge.
 
-> With defined hyperparameters parameters, the agent is able to reach the target in under `100` steps, in 100% of cases, assuming limitations of static obstacles, static target and low-variable start position.
-> However, without baseline, the agent reaches the target in around 50% of cases.
+**Result:** With defined hyperparameters parameters, the agent is able to reach the target in under `100` steps, in 100% of cases, assuming limitations of static obstacles, static target and low-variable start position.
+However, without baseline, the agent reaches the target in around 50% of cases.
 
 Trajectory of the agent when trained with baseline:
 
